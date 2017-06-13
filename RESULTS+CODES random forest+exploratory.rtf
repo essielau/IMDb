@@ -1,0 +1,515 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf820
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 > ## Import the information of USA movies\
+> setwd("/Users/Administrator/Documents/UMD/s2/DataScience/imdb")\
+> data <- read.csv("movie_metadata.csv", header = TRUE)\
+> head(data)\
+  color     director_name num_critic_for_reviews duration director_facebook_likes\
+1 Color     James Cameron                    723      178                       0\
+2 Color    Gore Verbinski                    302      169                     563\
+3 Color        Sam Mendes                    602      148                       0\
+4 Color Christopher Nolan                    813      164                   22000\
+5             Doug Walker                     NA       NA                     131\
+6 Color    Andrew Stanton                    462      132                     475\
+  actor_3_facebook_likes     actor_2_name actor_1_facebook_likes     gross\
+1                    855 Joel David Moore                   1000 760505847\
+2                   1000    Orlando Bloom                  40000 309404152\
+3                    161     Rory Kinnear                  11000 200074175\
+4                  23000   Christian Bale                  27000 448130642\
+5                     NA       Rob Walker                    131        NA\
+6                    530  Samantha Morton                    640  73058679\
+                           genres    actor_1_name\
+1 Action|Adventure|Fantasy|Sci-Fi     CCH Pounder\
+2        Action|Adventure|Fantasy     Johnny Depp\
+3       Action|Adventure|Thriller Christoph Waltz\
+4                 Action|Thriller       Tom Hardy\
+5                     Documentary     Doug Walker\
+6         Action|Adventure|Sci-Fi    Daryl Sabara\
+                                              movie_title num_voted_users\
+1                                                 Avatar           886204\
+2               Pirates of the Caribbean: At World's End           471220\
+3                                                Spectre           275868\
+4                                  The Dark Knight Rises          1144337\
+5 Star Wars: Episode VII - The Force Awakens                            8\
+6                                            John Carter           212204\
+  cast_total_facebook_likes         actor_3_name facenumber_in_poster\
+1                      4834            Wes Studi                    0\
+2                     48350       Jack Davenport                    0\
+3                     11700     Stephanie Sigman                    1\
+4                    106759 Joseph Gordon-Levitt                    0\
+5                       143                                         0\
+6                      1873         Polly Walker                    1\
+                                                     plot_keywords\
+1                           avatar|future|marine|native|paraplegic\
+2     goddess|marriage ceremony|marriage proposal|pirate|singapore\
+3                              bomb|espionage|sequel|spy|terrorist\
+4 deception|imprisonment|lawlessness|police officer|terrorist plot\
+5                                                                 \
+6               alien|american civil war|male nipple|mars|princess\
+                                       movie_imdb_link num_user_for_reviews language\
+1 http://www.imdb.com/title/tt0499549/?ref_=fn_tt_tt_1                 3054  English\
+2 http://www.imdb.com/title/tt0449088/?ref_=fn_tt_tt_1                 1238  English\
+3 http://www.imdb.com/title/tt2379713/?ref_=fn_tt_tt_1                  994  English\
+4 http://www.imdb.com/title/tt1345836/?ref_=fn_tt_tt_1                 2701  English\
+5 http://www.imdb.com/title/tt5289954/?ref_=fn_tt_tt_1                   NA         \
+6 http://www.imdb.com/title/tt0401729/?ref_=fn_tt_tt_1                  738  English\
+  country content_rating    budget title_year actor_2_facebook_likes imdb_score\
+1     USA          PG-13 237000000       2009                    936        7.9\
+2     USA          PG-13 300000000       2007                   5000        7.1\
+3      UK          PG-13 245000000       2015                    393        6.8\
+4     USA          PG-13 250000000       2012                  23000        8.5\
+5                               NA         NA                     12        7.1\
+6     USA          PG-13 263700000       2012                    632        6.6\
+  aspect_ratio movie_facebook_likes\
+1         1.78                33000\
+2         2.35                    0\
+3         2.35                85000\
+4         2.35               164000\
+5           NA                    0\
+6         2.35                24000\
+> mydata <- subset(data, country == "USA", select  = -country)\
+> \
+> summary(mydata)\
+              color               director_name  num_critic_for_reviews    duration    \
+                 :  14                   :  74   Min.   :  1.0          Min.   :  7.0  \
+  Black and White: 149   Steven Spielberg:  24   1st Qu.: 52.0          1st Qu.: 93.0  \
+ Color           :3644   Clint Eastwood  :  20   Median :113.0          Median :103.0  \
+                         Martin Scorsese :  20   Mean   :143.6          Mean   :106.4  \
+                         Woody Allen     :  18   3rd Qu.:198.0          3rd Qu.:117.0  \
+                         Spike Lee       :  16   Max.   :813.0          Max.   :330.0  \
+                         (Other)         :3635   NA's   :39             NA's   :6      \
+ director_facebook_likes actor_3_facebook_likes          actor_2_name \
+ Min.   :    0.0         Min.   :    0.0        Morgan Freeman :  16  \
+ 1st Qu.:    8.0         1st Qu.:  194.0        Charlize Theron:  13  \
+ Median :   52.0         Median :  430.0        Brad Pitt      :  11  \
+ Mean   :  823.1         Mean   :  735.7        Adam Sandler   :  10  \
+ 3rd Qu.:  212.0         3rd Qu.:  681.8        James Franco   :  10  \
+ Max.   :23000.0         Max.   :23000.0        Meryl Streep   :   9  \
+ NA's   :74              NA's   :13             (Other)        :3738  \
+ actor_1_facebook_likes     gross                            genres    \
+ Min.   :     0         Min.   :      703   Comedy              : 188  \
+ 1st Qu.:   710         1st Qu.: 10110274   Drama               : 167  \
+ Median :  1000         Median : 32178777   Comedy|Drama        : 153  \
+ Mean   :  7304         Mean   : 55214607   Comedy|Drama|Romance: 151  \
+ 3rd Qu.: 12000         3rd Qu.: 72147000   Comedy|Romance      : 136  \
+ Max.   :640000         Max.   :760505847   Drama|Romance       : 104  \
+ NA's   :4              NA's   :572         (Other)             :2908  \
+            actor_1_name                     movie_title   num_voted_users  \
+ Robert De Niro   :  42   Ben-Hur                  :   3   Min.   :      5  \
+ Johnny Depp      :  36   Halloween                :   3   1st Qu.:  10388  \
+ J.K. Simmons     :  31   Home                     :   3   Median :  39786  \
+ Denzel Washington:  29   Pan                      :   3   Mean   :  91053  \
+ Nicolas Cage     :  29   The Fast and the Furious :   3   3rd Qu.: 106772  \
+ Matt Damon       :  28   Victor Frankenstein      :   3   Max.   :1689764  \
+ (Other)          :3612   (Other)                  :3789                    \
+ cast_total_facebook_likes        actor_3_name  facenumber_in_poster\
+ Min.   :     0                         :  13   Min.   : 0.00       \
+ 1st Qu.:  1808            John Heard   :   8   1st Qu.: 0.00       \
+ Median :  3681            Anne Hathaway:   7   Median : 1.00       \
+ Mean   : 10891            Robert Duvall:   7   Mean   : 1.42       \
+ 3rd Qu.: 14998            Sam Shepard  :   7   3rd Qu.: 2.00       \
+ Max.   :656730            Stephen Root :   7   Max.   :43.00       \
+                           (Other)      :3758   NA's   :12          \
+                                                                           plot_keywords \
+                                                                                  :  91  \
+ based on novel                                                                   :   4  \
+ 1940s|child hero|fantasy world|orphan|reference to peter pan                     :   3  \
+ alien friendship|alien invasion|australia|flying car|mother daughter relationship:   3  \
+ assistant|experiment|frankenstein|medical student|scientist                      :   3  \
+ eighteen wheeler|illegal street racing|truck|trucker|undercover cop              :   3  \
+ (Other)                                                                          :3700  \
+                                             movie_imdb_link num_user_for_reviews\
+ http://www.imdb.com/title/tt0077651/?ref_=fn_tt_tt_1:   3   Min.   :   1        \
+ http://www.imdb.com/title/tt0232500/?ref_=fn_tt_tt_1:   3   1st Qu.:  75        \
+ http://www.imdb.com/title/tt1976009/?ref_=fn_tt_tt_1:   3   Median : 169        \
+ http://www.imdb.com/title/tt2224026/?ref_=fn_tt_tt_1:   3   Mean   : 288        \
+ http://www.imdb.com/title/tt2638144/?ref_=fn_tt_tt_1:   3   3rd Qu.: 345        \
+ http://www.imdb.com/title/tt3332064/?ref_=fn_tt_tt_1:   3   Max.   :4667        \
+ (Other)                                             :3789   NA's   :13          \
+      language      content_rating     budget            title_year  \
+ English  :3779   R        :1571   Min.   :      218   Min.   :1916  \
+          :  10   PG-13    :1208   1st Qu.:  6500000   1st Qu.:1998  \
+ Spanish  :   7   PG       : 558   Median : 20000000   Median :2005  \
+ Aramaic  :   1            : 158   Mean   : 35755986   Mean   :2002  \
+ Bosnian  :   1   G        :  85   3rd Qu.: 50000000   3rd Qu.:2011  \
+ Cantonese:   1   Not Rated:  51   Max.   :300000000   Max.   :2016  \
+ (Other)  :   8   (Other)  : 176   NA's   :298         NA's   :74    \
+ actor_2_facebook_likes   imdb_score     aspect_ratio    movie_facebook_likes\
+ Min.   :     0.0       Min.   :1.600   Min.   : 1.180   Min.   :     0      \
+ 1st Qu.:   370.0       1st Qu.:5.700   1st Qu.: 1.850   1st Qu.:     0      \
+ Median :   659.0       Median :6.500   Median : 1.850   Median :   195      \
+ Mean   :  1874.6       Mean   :6.367   Mean   : 2.201   Mean   :  7951      \
+ 3rd Qu.:   960.2       3rd Qu.:7.100   3rd Qu.: 2.350   3rd Qu.:  5000      \
+ Max.   :137000.0       Max.   :9.300   Max.   :16.000   Max.   :349000      \
+ NA's   :7                              NA's   :222                          \
+> \
+> # How many movies are in our dataset?\
+> nrow(mydata)\
+[1] 3807\
+> install.packages("dplyr")\
+trying URL 'https://cran.rstudio.com/bin/macosx/mavericks/contrib/3.3/dplyr_0.5.0.tgz'\
+Content type 'application/x-gzip' length 4841443 bytes (4.6 MB)\
+==================================================\
+downloaded 4.6 MB\
+\
+\
+The downloaded binary packages are in\
+	/var/folders/m2/l3w0gr1x6yz3q9qz4sz3bt1w0000gp/T//RtmpCkphI8/downloaded_packages\
+> install.packages("ggrepel")\
+trying URL 'https://cran.rstudio.com/bin/macosx/mavericks/contrib/3.3/ggrepel_0.6.5.tgz'\
+Content type 'application/x-gzip' length 575311 bytes (561 KB)\
+==================================================\
+downloaded 561 KB\
+\
+\
+The downloaded binary packages are in\
+	/var/folders/m2/l3w0gr1x6yz3q9qz4sz3bt1w0000gp/T//RtmpCkphI8/downloaded_packages\
+> library("ggplot2", lib.loc = "/Library/Frameworks/R.framework/Versions/3.3/Resources/library")\
+> library("dplyr")\
+\
+Attaching package: \'91dplyr\'92\
+\
+The following objects are masked from \'91package:stats\'92:\
+\
+    filter, lag\
+\
+The following objects are masked from \'91package:base\'92:\
+\
+    intersect, setdiff, setequal, union\
+\
+> library("ggrepel")\
+> \
+> # What does the distribution of imdb ratings look like?\
+> ggplot(mydata, aes(imdb_score)) + geom_histogram(bins = 100)\
+> summary(mydata$imdb_score)\
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. \
+  1.600   5.700   6.500   6.367   7.100   9.300 \
+> \
+> #Create object mplot (movie year and score)\
+> mplot <- ggplot(mydata, aes(title_year, imdb_score))\
+> \
+> mplot + geom_point(aes(colour = imdb_score)) + scale_colour_gradient(low = "yellow", high =\
++                                                                        "red")\
+Warning message:\
+Removed 74 rows containing missing values (geom_point). \
+> \
+> qplot(imdb_score, gross, data = mydata, color = actor_1_name)\
+Warning message:\
+Removed 572 rows containing missing values (geom_point). \
+> \
+> # How are the average ratings of stars distributed?\
+> # Is it related to the number of films they have starred in?\
+> actors <- mydata %>% group_by(actor_1_name) %>%\
++   summarise(\
++     count = n(),\
++     avg_score = mean(imdb_score),\
++     gross = mean(gross)\
++   ) %>%\
++   arrange(desc(count))\
+> \
+> ggplot(actors, aes(count, avg_score)) + geom_point(alpha = 1 / 5)\
+> \
+> # Zoom in on the most experienced stars\
+> # We choose 24 starring roles as an arbitrary cut-off, since it leaves us the top 10 experienced stars\
+> top_actors <- actors %>% filter(count > 23)\
+> ggplot(top_actors) +\
++   geom_point(aes(count, avg_score, size = count), color = 'red') +\
++   geom_text_repel(aes(count, avg_score, label = actor_1_name)) +\
++   theme_classic(base_size = 16)\
+> \
+> # How are the gross revenue of stars distributed?\
+> # Is it related to the number of films they have starred in?\
+> ggplot(actors, aes(count, gross)) + geom_point(alpha = 1 / 5)\
+Warning message:\
+Removed 494 rows containing missing values (geom_point). \
+> \
+> # Zoom in on the most profitable stars\
+> # We choose gross larger than 222701282 as an arbitrary cut-off, since it leaves us the top 10 profitable stars\
+> top_actors_gross <- actors %>% filter(gross > 222701282)\
+> ggplot(top_actors_gross) +\
++   geom_point(aes(count, gross, size = count), color = 'red') +\
++   geom_text_repel(aes(count, gross, label = actor_1_name)) +\
++   theme_classic(base_size = 16)\
+> \
+> ## Use Gross, Count, Facebook likes of the movie, Facebook likes of the actor\
+> ## to forecast if the actor is highly scored or low scored(make it a categorical variable).\
+> \
+> ## random forest\
+> setwd("/Users/Administrator/Documents/UMD/s2/DataScience/imdb")\
+> mydata <- read.csv("USA_string_adjusted.csv", header = TRUE)\
+> library(xlsx)\
+Loading required package: rJava\
+Loading required package: xlsxjars\
+> write.xlsx(\
++   mydata,\
++   "/Users/Administrator/Documents/UMD/s2/DataScience/string_adjusted.xlsx"\
++ )\
+> mydata <- na.omit(mydata)\
+> head(mydata)\
+  color  director_name num_critic_for_reviews duration director_facebook_likes\
+1 Color Andrew Stanton                    462      132                     475\
+2 Color   Nathan Greno                    324      100                      15\
+3 Color Gore Verbinski                    313      151                     563\
+4 Color Gore Verbinski                    450      150                     563\
+5 Color Andrew Adamson                    258      150                      80\
+6 Color   Rob Marshall                    448      136                     252\
+  actor_3_facebook_likes         actor_2_name actor_1_facebook_likes     gross adj_gross\
+1                    530      Samantha Morton                    640  73058679  76372180\
+2                    284         Donna Murphy                    799 200807262 221021887\
+3                   1000        Orlando Bloom                  40000 423032628 503624960\
+4                   1000          Ruth Wilson                  40000  89289910  91992099\
+5                    201 Pierfrancesco Favino                  22000 141614023 157862904\
+6                   1000          Sam Claflin                  40000 241063875 257212033\
+                                                     genres   actor_1_name\
+1                                   Action|Adventure|Sci-Fi   Daryl Sabara\
+2 Adventure|Animation|Comedy|Family|Fantasy|Musical|Romance   Brad Garrett\
+3                                  Action|Adventure|Fantasy    Johnny Depp\
+4                                  Action|Adventure|Western    Johnny Depp\
+5                           Action|Adventure|Family|Fantasy Peter Dinklage\
+6                                  Action|Adventure|Fantasy    Johnny Depp\
+                                   movie_title num_voted_users cast_total_facebook_likes\
+1                                 John Carter           212204                      1873\
+2                                     Tangled           294810                      2036\
+3  Pirates of the Caribbean: Dead Man's Chest           522040                     48486\
+4                             The Lone Ranger           181792                     45757\
+5    The Chronicles of Narnia: Prince Caspian           149922                     22697\
+6 Pirates of the Caribbean: On Stranger Tides           370704                     54083\
+    actor_3_name facenumber_in_poster\
+1   Polly Walker                    1\
+2    M.C. Gainey                    1\
+3 Jack Davenport                    2\
+4  Tom Wilkinson                    1\
+5 Dami\'e1n Alc\'e1zar                    4\
+6 Stephen Graham                    4\
+                                                                          plot_keywords\
+1                                    alien|american civil war|male nipple|mars|princess\
+2                                  17th century|based on fairy tale|disney|flower|tower\
+3                                  box office hit|giant squid|heart|liar's dice|monster\
+4                                                 horse|outlaw|texas|texas ranger|train\
+5 brother brother relationship|brother sister relationship|good versus evil|king|narnia\
+6                                             blackbeard|captain|pirate|revenge|soldier\
+                                       movie_imdb_link num_user_for_reviews language\
+1 http://www.imdb.com/title/tt0401729/?ref_=fn_tt_tt_1                  738  English\
+2 http://www.imdb.com/title/tt0398286/?ref_=fn_tt_tt_1                  387  English\
+3 http://www.imdb.com/title/tt0383574/?ref_=fn_tt_tt_1                 1832  English\
+4 http://www.imdb.com/title/tt1210819/?ref_=fn_tt_tt_1                  711  English\
+5 http://www.imdb.com/title/tt0499448/?ref_=fn_tt_tt_1                  438  English\
+6 http://www.imdb.com/title/tt1298650/?ref_=fn_tt_tt_1                  484  English\
+  country content_rating    budget  adj_budg title_year actor_2_facebook_likes imdb_score\
+1     USA          PG-13 263700000 275659843       2012                    632        6.6\
+2     USA             PG 260000000 286173368       2010                    553        7.8\
+3     USA          PG-13 225000000 267864955       2006                   5000        7.3\
+4     USA          PG-13 215000000 221506566       2013                   2000        6.5\
+5     USA             PG 225000000 250816640       2008                    216        6.6\
+6     USA          PG-13 250000000 266746762       2011                  11000        6.7\
+  aspect_ratio movie_facebook_likes colordum\
+1         2.35                24000        1\
+2         1.85                29000        1\
+3         2.35                 5000        1\
+4         2.35                48000        1\
+5         2.35                    0        1\
+6         2.35                58000        1\
+> barplot(table(mydata$imdb_score))\
+> \
+> ##classify movies into bad, good and normal quality\
+> mydata$quality <-\
++   ifelse(mydata$imdb_score <= 5.5,\
++          "bad",\
++          ifelse(mydata$imdb_score >= 7, "good", "normal"))\
+> \
+> barplot(table(mydata$quality))\
+> \
+> table(mydata$quality)\
+\
+   bad   good normal \
+   309    347    785 \
+> \
+> ## Separate data into testing and training sets\
+> set.seed(123)\
+> samp <- sample(nrow(mydata), 0.8 * nrow(mydata))\
+> train <- mydata[samp,]\
+> test <- mydata[-samp,]\
+> \
+> sample(1:nrow(train), replace = TRUE)\
+   [1]  864 1059  610  429   76  985  588  242  433  239  530  279  137   84  797  331\
+  [17]  173 1121  473  463  748 1056  250  632  830  458  109  732    3  243  783  998\
+  [33]  922  156  447  909  799  685  143  640  518  883   31  225 1016  127 1116  444\
+  [49]  990 1023  564  828  561 1139   75  182  905  625  480 1151  295  586   91  938\
+  [65]  441  925  229 1091  399  602  129 1021 1100   47  569  261  990  612    6  320\
+  [81]  375  679  288   50  128  811 1082  359   91  371  720  508  924  322  658   49\
+  [97]  220  838  953  589  655    2  166  998   96  282 1131  666  287  709   37  169\
+ [113]  810   76  717 1080  102 1121   30  836  523  653 1006  639  850  718  359  452\
+ [129]  233  983  700  872  649  318  848  633  399  594  940  607  234  978  427  350\
+ [145]  888  845  967  656   31  561  626  964  840  640   85  158  789  115  235  422\
+ [161]  975  273  813  124  898  294  632   40  929  390 1056  412 1124  443  563  566\
+ [177]   15  739  591  370  670  712  505  197  824  862  973  617  349  526  443  287\
+ [193]  755 1101  336  750  618  689   29    6  152   29  107  548  227  939  282  564\
+ [209]  748  183  965  503  269  345  184  675  172  207  391  212  468  707  790  949\
+ [225]  431 1098   22  706  535  409 1017   88 1018  217  248 1002   71  271 1144  782\
+ [241]  502  435  532  924  764  537   62  274  269  266   72  573  282  874  631 1093\
+ [257]  100 1092  833 1063  708  186  211  842  680  360  891  388  986  669  479 1075\
+ [273]  534  115  537 1134 1066  502 1002  347  920  923  446  440  744  993  757  595\
+ [289]  172  706   49  575  852  869   73  510  577  312  690  848  823  135  663  920\
+ [305]  268  836  966  137 1105  862  935  219   30  996 1059  159  551  534  807   76\
+ [321]  845  457  532  836  542 1152  975  955  878  130  967  938 1143   56  861  484\
+ [337]  671  958   16   14 1148  883  363  936 1142  232  745  505 1081 1139  526  266\
+ [353]  802  642  674  500  491  688  521 1103  973  257  485  484   24  439  487  221\
+ [369]  813   16  843  499  843   17   53  483  742  254  961  801 1036  478  474  289\
+ [385]  431  268 1074  549   55  892  382  637  780  320   61  491  703 1125 1118  102\
+ [401]  575  456  450  367  787  328  450 1141  913  360  942  255  578  193  138 1035\
+ [417]  108  997  319   32  908  414   29  860   35  500  296  574  753   97  208  121\
+ [433]  936  723  727  451  498  402  915 1022  751  683  378   88  682  206  855  339\
+ [449]  737  144  295  946  926   53 1009  148  702  541  642  842  542 1139 1135  454\
+ [465]  702  398  504  264    7   28   68  881  541  981  671  216  702 1030  916  581\
+ [481]  488  754 1023 1028  206  297  131  919  127  956  889 1088  538 1083  905 1008\
+ [497]  455  115  320  832  411  441   37  601  140 1020   86  904  984   43  317  740\
+ [513]  905  461 1078  450  489  330  705  644   47  859  238  757  602  730  712  329\
+ [529]  258  621 1148  379  373   41  606  688  855 1098  565   96  300 1008  982  972\
+ [545] 1091  752  563  217  822   99  532 1079  974  826  143  686 1141  709  315   74\
+ [561]   84 1007  418 1090  644  591 1092  127  944  435  642  362   95  899  223  756\
+ [577]  502  228 1146  515   37 1080 1004  693  345  933 1097  982  147 1117  642    7\
+ [593]  157    7  942  902 1073  425 1123  949  908  718 1115  576 1030  463  516 1079\
+ [609]  788   21  191  572  492 1143 1025  399  814 1047  780  737  173  693  315  528\
+ [625]  257  294  754  544  186  314  822  707  153   81 1114  425  781  975  279   41\
+ [641]  686  964  418  383  743 1105  687  588  179  975  247  772  712   58 1094  672\
+ [657]  992  598  307  689  917  795  554  537  713  518  695    6 1147  469  136 1002\
+ [673]  623 1016   44 1016  833  887  995  577 1067  240   32  364  761  363 1089  898\
+ [689]  392  555  480  895  560   18  741  271  861  341 1044  984  533   83  666  668\
+ [705] 1145  387  769 1082  663  797  104  999  578  258  476 1022  571  776  326  942\
+ [721]  284  426  272 1078  479  159 1054  401  983  165  415  283   53  904  230  452\
+ [737]  373  694  624 1142  293  848 1127  643  453  951  130  618  512  316  182 1005\
+ [753]  648  635  683  839  737  708   61  652  677  725  717   95   90  792  957  169\
+ [769]  903  561 1140  575  648  436  598   86  621 1108  609  504   38   44   55  186\
+ [785]  541  929  324  870  602  333   21  770   78  964  156  756  966  297  157  880\
+ [801]  245  309  613  547  431  894  644  179 1140  282  151  246  438  415  349   52\
+ [817] 1077  656  255 1012  539  625  904  747  167  371 1096  217  865  529  163  237\
+ [833]  778  160  479  520  718  290  535  191  989  181  102 1030  347  867  463  517\
+ [849]  184  167  172  593  568  711  516   65    7  256  981  308  690  702 1143  221\
+ [865]  868  280  378    5 1150  505 1150  227  129  289  784  665  480  841  662  666\
+ [881]  680  257  120  849  706 1096 1106  859  501  202  502  879 1059 1045  940  231\
+ [897]   58  552  681  112 1096  188 1062  148  764  904  881  775  134  981  712  964\
+ [913]  196   12  373  311  951 1076  148 1053  698  462  767  885  602  455 1113   57\
+ [929]  177  803  839  125  536  740  458 1141  782  364  178  348  109   31  358  856\
+ [945] 1107  480  602   78  726  408  490 1111  785  828  197  235 1010  965  831  324\
+ [961]  242  570  602  254  880   29  820  969 1073  763  311  252 1000   29  980  604\
+ [977]  502 1073  190  437  160  173  780  648  544  935 1109  594  811  209  409   58\
+ [993]  176  115  323  447  731  815  376 1112\
+ [ reached getOption("max.print") -- omitted 152 entries ]\
+> \
+> ## Random forest model\
+> install.packages("randomForest")\
+trying URL 'https://cran.rstudio.com/bin/macosx/mavericks/contrib/3.3/randomForest_4.6-12.tgz'\
+Content type 'application/x-gzip' length 169352 bytes (165 KB)\
+==================================================\
+downloaded 165 KB\
+\
+\
+The downloaded binary packages are in\
+	/var/folders/m2/l3w0gr1x6yz3q9qz4sz3bt1w0000gp/T//RtmpCkphI8/downloaded_packages\
+> library(randomForest)\
+randomForest 4.6-12\
+Type rfNews() to see new features/changes/bug fixes.\
+\
+Attaching package: \'91randomForest\'92\
+\
+The following object is masked from \'91package:dplyr\'92:\
+\
+    combine\
+\
+The following object is masked from \'91package:ggplot2\'92:\
+\
+    margin\
+\
+> fit <-\
++   randomForest(\
++     as.factor(quality) ~ director_facebook_likes + duration + actor_1_facebook_likes + actor_2_facebook_likes + actor_3_facebook_likes +\
++       facenumber_in_poster + budget,\
++     data = train,\
++     importance = TRUE,\
++     ntree = 4500\
++   )\
+> fit\
+\
+Call:\
+ randomForest(formula = as.factor(quality) ~ director_facebook_likes +      duration + actor_1_facebook_likes + actor_2_facebook_likes +      actor_3_facebook_likes + facenumber_in_poster + budget, data = train,      importance = TRUE, ntree = 4500) \
+               Type of random forest: classification\
+                     Number of trees: 4500\
+No. of variables tried at each split: 2\
+\
+        OOB estimate of  error rate: 39.15%\
+Confusion matrix:\
+       bad good normal class.error\
+bad     76    6    164   0.6910569\
+good    11  101    159   0.6273063\
+normal  60   51    524   0.1748031\
+> varImpPlot(fit)\
+> \
+> Prediction <- predict(fit, test)\
+> submit <- data.frame(Movie = test$movie_title, Quality = Prediction)\
+> submit <- cbind2(submit, test[,32])\
+> as.factor(submit$Quality)\
+  [1] normal normal normal normal normal normal bad    normal normal bad    normal normal\
+ [13] normal good   good   normal normal normal normal normal normal normal normal normal\
+ [25] normal normal normal normal normal normal normal normal normal normal normal good  \
+ [37] normal normal good   normal good   normal normal normal normal normal good   normal\
+ [49] normal normal bad    normal normal normal normal normal good   normal normal normal\
+ [61] normal normal normal normal bad    normal normal bad    normal normal normal normal\
+ [73] normal good   bad    normal bad    normal normal normal normal normal bad    normal\
+ [85] normal normal bad    normal normal normal normal normal good   normal bad    normal\
+ [97] normal normal good   normal normal normal normal normal normal normal normal normal\
+[109] normal normal normal normal normal normal good   bad    bad    good   normal normal\
+[121] normal normal normal good   good   normal normal bad    normal normal normal normal\
+[133] bad    good   good   normal normal normal normal normal normal bad    normal bad   \
+[145] bad    normal normal normal normal bad    normal normal normal normal normal normal\
+[157] normal normal normal normal normal bad    normal normal normal normal normal normal\
+[169] normal normal normal bad    normal good   normal normal normal normal normal bad   \
+[181] bad    bad    good   normal normal normal good   normal normal good   bad    normal\
+[193] normal good   normal normal bad    good   bad    bad    normal normal bad    normal\
+[205] normal good   good   normal normal bad    bad    normal good   normal normal bad   \
+[217] bad    normal normal normal bad    good   good   normal normal bad    normal good  \
+[229] bad    good   normal normal normal normal bad    normal good   good   normal normal\
+[241] normal normal good   normal normal good   normal normal normal good   good   normal\
+[253] good   normal normal normal good   normal good   normal normal normal normal normal\
+[265] good   normal normal good   normal normal normal normal normal good   normal normal\
+[277] normal normal normal normal normal normal normal good   normal normal normal normal\
+[289] normal\
+Levels: bad good normal\
+> as.factor(submit$y)\
+  [1] good   normal bad    good   normal normal normal good   good   bad    bad    bad   \
+ [13] good   good   good   bad    good   bad    good   normal normal normal bad    normal\
+ [25] normal normal good   normal normal normal normal normal normal bad    bad    good  \
+ [37] normal normal good   bad    good   good   normal bad    good   good   normal normal\
+ [49] normal normal normal normal normal good   normal normal good   normal good   normal\
+ [61] normal good   normal normal bad    normal good   good   bad    normal bad    good  \
+ [73] good   good   normal good   normal bad    normal bad    normal normal bad    normal\
+ [85] normal bad    bad    normal good   good   normal normal normal normal normal normal\
+ [97] bad    normal good   bad    good   normal normal bad    normal good   normal normal\
+[109] normal normal normal good   normal bad    good   normal normal good   normal normal\
+[121] bad    good   bad    good   good   normal bad    bad    good   bad    good   normal\
+[133] bad    good   normal normal normal bad    normal normal normal normal normal bad   \
+[145] bad    good   normal normal normal bad    normal normal normal normal normal bad   \
+[157] bad    normal normal normal good   normal normal normal normal normal bad    normal\
+[169] good   normal bad    bad    good   normal normal bad    normal normal normal normal\
+[181] bad    normal good   bad    normal normal normal normal normal good   bad    bad   \
+[193] good   good   normal normal bad    normal bad    bad    normal normal bad    bad   \
+[205] bad    normal normal bad    bad    normal normal normal normal good   bad    normal\
+[217] normal normal normal good   bad    normal good   normal normal normal normal good  \
+[229] normal good   normal good   normal normal normal normal good   good   good   bad   \
+[241] good   bad    good   normal normal good   normal bad    normal good   normal bad   \
+[253] good   normal normal normal good   bad    normal normal normal normal normal bad   \
+[265] good   normal good   good   bad    normal good   good   normal bad    good   good  \
+[277] normal normal good   good   bad    good   good   normal bad    normal normal good  \
+[289] good  \
+Levels: bad good normal\
+> table(submit$Quality,submit$y)\
+        \
+         bad good normal\
+  bad     17    1     18\
+  good     1   28     13\
+  normal  45   47    119\
+> write.csv(submit, file = "firstforest.csv", row.names = FALSE)}
